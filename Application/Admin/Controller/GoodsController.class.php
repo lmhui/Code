@@ -1,64 +1,73 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Ming
- * Date: 17/1/9
- * Time: 10:21
- */
 namespace Admin\Controller;
-use Think\Controller;
+use \Admin\Controller\IndexController;
+class GoodsController extends IndexController 
+{
+    public function add()
+    {
+    	if(IS_POST)
+    	{
+    		$model = D('Admin/Goods');
+    		if($model->create(I('post.'), 1))
+    		{
+    			if($id = $model->add())
+    			{
+    				$this->success('添加成功！', U('lst?p='.I('get.p')));
+    				exit;
+    			}
+    		}
+    		$this->error($model->getError());
+    	}
 
-class GoodsController extends Controller {
-
-    public function add(){
-        //处理表单
-        if(IS_POST){
-
-            //先生成模型
-            //注意D和M的不同，D是生成自己定义的模型，M是生成TP自带的模型对象
-
-            $model = D('Goods');
-
-            //1.接收表单中所有的数据并保存到模型中 2.使用I函数会过滤数据  3.根据模型中定义的规则验证表单
-            if($model->create(I('post.'),1)){
-                //I('post.')是指create方法要接收的数据过滤后的$_POST  1是指定当前是添加的表单使用的是insertFields属性
-
-                //插入数据
-                if($model->add()){
-                    //提示信息
-                    $this->success('操作成功！',U('lst'));
-                    //停止后面的代码
-                    exit;
-                }
-            }
-            //如果失败，获取失败的原因
-            $error = $model->getError();
-            //设置提示信息，并跳回到上一个页面
-            $this->error($error);
-        }
-        $this->display();
+		$this->setPageBtn('添加商品', '商品列表', U('lst?p='.I('get.p')));
+		$this->display();
     }
+    public function edit()
+    {
+    	$id = I('get.id');
+    	if(IS_POST)
+    	{
+    		$model = D('Admin/Goods');
+    		if($model->create(I('post.'), 2))
+    		{
+    			if($model->save() !== FALSE)
+    			{
+    				$this->success('修改成功！', U('lst', array('p' => I('get.p', 1))));
+    				exit;
+    			}
+    		}
+    		$this->error($model->getError());
+    	}
+    	$model = M('Goods');
+    	$data = $model->find($id);
+    	$this->assign('data', $data);
 
-    public function edit(){
-
+		$this->setPageBtn('修改商品', '商品列表', U('lst?p='.I('get.p')));
+		$this->display();
     }
-
-    public function delete(){
-
+    public function delete()
+    {
+    	$model = D('Admin/Goods');
+    	if($model->delete(I('get.id', 0)) !== FALSE)
+    	{
+    		$this->success('删除成功！', U('lst', array('p' => I('get.p', 1))));
+    		exit;
+    	}
+    	else 
+    	{
+    		$this->error($model->getError());
+    	}
     }
+    public function lst()
+    {
+    	$model = D('Admin/Goods');
+    	$data = $model->search();
+    	$this->assign(array(
+    		'data' => $data['data'],
+    		'page' => $data['page'],
+    	));
 
-    //列表
-    public function lst(){
-
-        $model = D('Goods');
-        //获取带翻页的数据
-        $data = $model->search();
-        $this->assign(array(
-            'data' => $data['data'],
-            'page' => $data['page'],
-        ));
-        $this->display();
-
+		$this->setPageBtn('商品列表', '添加商品', U('add'));
+    	$this->display();
     }
-
 }

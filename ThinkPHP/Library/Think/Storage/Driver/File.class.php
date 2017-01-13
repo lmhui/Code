@@ -41,9 +41,8 @@ class File extends Storage{
      */
     public function put($filename,$content,$type=''){
         $dir         =  dirname($filename);
-        if(!is_dir($dir)){
-            mkdir($dir,0777,true);
-        }
+        if(!is_dir($dir))
+            mkdir($dir,0755,true);
         if(false === file_put_contents($filename,$content)){
             E(L('_STORAGE_WRITE_ERROR_').':'.$filename);
         }else{
@@ -73,11 +72,10 @@ class File extends Storage{
      * @param array $vars  传入变量
      * @return void        
      */
-    public function load($_filename,$vars=null){
-        if(!is_null($vars)){
+    public function load($filename,$vars=null){
+        if(!is_null($vars))
             extract($vars, EXTR_OVERWRITE);
-        }
-        include $_filename;
+        include $filename;
     }
 
     /**

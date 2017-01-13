@@ -1,19 +1,58 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "/www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="/www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-</head>
-<body>
-<form method="POST" action="__SELF__" enctype="multipart/form-data">
-	商品名称:<input type="text" name="goods_name" /><br />
-	商品价格:<input type="text" name="price" /><br />
-	商品logo:<input type="file" name="logo" /><br />
-	商品描述:<input type="text" name="goods_desc" /><br />
-	是否上架:
-	<input type="radio" name="is_on_sale" value="1" checked="checked" />上架
-	<input type="radio" name="is_on_sale" value="0" />下架
-	<br />
-	<input type="submit" value="提交" />
-</form>
-</body>
-</html>
+<layout name="Index/header_footer" />
+<div class="main-div">
+    <form name="main_form" method="POST" action="__SELF__" enctype="multipart/form-data">
+        <table cellspacing="1" cellpadding="3" width="100%">
+            <tr>
+                <td class="label">商品名称：</td>
+                <td>
+                    <input  type="text" name="goods_name" value="" />
+                </td>
+            </tr>
+            <tr>
+                <td class="label">商品logo：</td>
+                <td>
+                	<input type="file" name="logo" /> 
+                </td>
+            </tr>
+            <tr>
+                <td class="label">商品价格：</td>
+                <td>
+                    <input  type="text" name="price" value="0.00" />
+                </td>
+            </tr>
+            <tr>
+                <td class="label">商品描述：</td>
+                <td>
+                	<textarea id="goods_desc" name="goods_desc"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td class="label">是否上架：</td>
+                <td>
+                	<input type="radio" name="is_on_sale" value="1" checked="checked" />上架 
+                	<input type="radio" name="is_on_sale" value="0"  />下架 
+                </td>
+            </tr>
+            <tr>
+                <td class="label">是否已经删除：</td>
+                <td>
+                	<input type="radio" name="is_delete" value="1"  />已经删除 
+                	<input type="radio" name="is_delete" value="0" checked="checked" />未删除 
+                </td>
+            </tr>
+            <tr>
+                <td colspan="99" align="center">
+                    <input type="submit" class="button" value=" 确定 " />
+                    <input type="reset" class="button" value=" 重置 " />
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<script>
+UE.getEditor('goods_desc', {
+	"initialFrameWidth" : "100%",   // 宽
+	"initialFrameHeight" : 80,      // 高
+	"maximumWords" : 10000            // 最大可以输入的字符数量
+});
+</script>
